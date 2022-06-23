@@ -28,4 +28,8 @@
     <string name="start_marker">Старт</string>
     <string name="From_long_click">От долгого щелчка </string>
     <string name="navUp">перейти к заметке</string>
+    <string name="default_address">Red Square, 1, Moscow</string>
+    <string name="button_search_map">Search</string>
+    <string name="marker_start">Start</string>
+
 </resources>
