@@ -2,13 +2,20 @@ package com.bikk.mapsapp
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Address
-import android.location.Geocoder
+import android.location.*
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bikk.mapsapp.databinding.FragmentMapsBinding
@@ -26,9 +33,12 @@ import java.io.IOException
 
 class MapsFragment : Fragment(R.layout.fragment_maps) {
     private val viewBinding: FragmentMapsBinding by viewBinding()
+
+
     private val LATITUDE = 44.952117
     private val LONGITUDE = 34.102417
-
+    private  val MIN_TIME_MS = 5000L
+    private  val MIN_DISTANCE_M = 10f
     private lateinit var map: GoogleMap
     private var menu: Menu? = null
 
@@ -38,6 +48,116 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
     private val scopeIo = CoroutineScope(Dispatchers.IO + coroutineExceptionHandler + SupervisorJob())
     private val scope = CoroutineScope(Dispatchers.Main + coroutineExceptionHandler + SupervisorJob())
     private var job: Job? = null
+    private val permissionResult = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { result ->
+        if (result) {
+            getLocation()
+        } else {
+            Toast.makeText(
+                context, getString(R.string.need_permissions_to_find_location),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(callback)
+        initSearchByAddress()
+        viewBinding.includedMapsFragment.mainFragmentFABLocation.setOnClickListener { checkPermission() }
+    }
+
+    private fun checkPermission() {
+        activity?.let {
+            when (PackageManager.PERMISSION_GRANTED) {
+                ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                    getLocation()
+                }
+                else -> {
+                    permissionResult.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                }
+            }
+        }
+    }
+
+    // получаем текущее местоположение
+    private fun getLocation() {
+        val locationManager = // локация определяется через locationManager
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+// Проверка включено ли местоположенире
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            val provider = locationManager.getProviderProperties(LocationManager.GPS_PROVIDER)
+            provider?.let {
+                // Будем получать геоположение через каждые 60 секунд или каждые 100 метров
+                locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    MIN_TIME_MS,
+                    MIN_DISTANCE_M,
+                    onLocationListener
+                )
+            }
+
+        } else {
+            val location =
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) // запрос последнего известного местоположения в системе
+            if (location == null) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.looks_like_location_disabled),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                getAddressAsync(location)
+            }
+        }
+    }
+
+    private val onLocationListener = LocationListener { location -> getAddressAsync(location) }
+
+    //Тема геокодер
+    private fun getAddressAsync(location: Location) = with(viewBinding) {
+        val geoCoder = Geocoder(context)
+        job = scopeIo.launch(Dispatchers.IO) {
+            try {
+                val addresses = geoCoder.getFromLocation(
+                    location.latitude,
+                    location.longitude,
+                    1
+                )
+                withContext(Dispatchers.Main) {
+                    showAddressDialog(addresses[0].getAddressLine(0), location)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun showAddressDialog(address: String, location: Location) {
+        activity?.let {
+            AlertDialog.Builder(it)
+                .setTitle(getString(R.string.dialog_address_title))
+                .setMessage(address)
+                .setPositiveButton(getString(R.string.dialog_take_a_note)) { _, _ ->
+//                    openDetailsFragment(
+//                        Weather(
+//                            City(
+//                                address,
+//                                location.latitude,
+//                                location.longitude
+//                            )
+//                        )
+//                    )
+                }
+                .setNegativeButton(getString(R.string.dialog_button_close)) { dialog, _ -> dialog.dismiss() }
+                .create()
+                .show()
+        }
+    }
+
+
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
@@ -73,13 +193,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
 
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
-        initSearchByAddress()
-    }
-
     override fun onDestroyView() {
         menu?.findItem(R.id.menu_google_maps)?.isVisible = true
         super.onDestroyView()
@@ -92,6 +205,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         this.menu = menu
 //        menu.findItem(R.id.menu_google_maps).isVisible = false
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

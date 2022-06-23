@@ -35,6 +35,10 @@
             android:text="@string/search" />
     </LinearLayout>
 
-    <include layout="@layout/fragment_maps_content" />
+
+
+    <include
+        android:id="@+id/included_maps_fragment"
+        layout="@layout/fragment_maps_content" />
 
 </LinearLayout>

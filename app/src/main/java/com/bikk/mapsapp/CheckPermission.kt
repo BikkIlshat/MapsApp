@@ -52,10 +52,10 @@ class CheckPermission : Fragment(R.layout.fragment_check_permission) {
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-       // viewBinding.mainFragmentFABLocation.setOnClickListener { checkPermission() }
-    }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        viewBinding.mainFragmentFABLocation.setOnClickListener { checkPermission() }
+//    }
 
     private fun checkPermission() {
         activity?.let {
