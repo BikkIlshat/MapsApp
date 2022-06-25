@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="com.bikk.mapsapp.MapsFragment"
+        android:name="com.bikk.mapsapp.map.MapsFragment"
         android:label="Maps"
         tools:layout="@layout/fragment_maps">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/notesFragment"
-        android:name="com.bikk.mapsapp.NotesFragment"
+        android:name="com.bikk.mapsapp.notes.NotesFragment"
         android:label="Notes"
         tools:layout="@layout/fragment_notes" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.bikk.mapsapp
+package com.bikk.mapsapp.map
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.bikk.mapsapp.R
 import com.bikk.mapsapp.databinding.FragmentMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -183,7 +184,9 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         googleMap.setOnMapLongClickListener { latLng ->
             setMarker(latLng, "From long click")
             drawLine()
+
         }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -191,12 +194,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         setHasOptionsMenu(true)
     }
 
-
-
-    override fun onDestroyView() {
-        menu?.findItem(R.id.menu_google_maps)?.isVisible = true
-        super.onDestroyView()
-    }
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -283,10 +280,19 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
             )
         }
     }
+
+
+
     override fun onDestroy() {
         scopeIo.cancel()
         super.onDestroy()
     }
+
+    override fun onDestroyView() {
+        menu?.findItem(R.id.menu_google_maps)?.isVisible = true
+        super.onDestroyView()
+    }
+
 
 }
 
