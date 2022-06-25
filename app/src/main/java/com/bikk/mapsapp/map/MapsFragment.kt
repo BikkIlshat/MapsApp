@@ -158,8 +158,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         }
     }
 
-
-
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
@@ -200,7 +198,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.map_menu, menu)
         this.menu = menu
-//        menu.findItem(R.id.menu_google_maps).isVisible = false
     }
 
 
@@ -257,7 +254,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         }
     }
 
-
     private fun setMarker(location: LatLng, searchText: String) {
         map.addMarker(
             MarkerOptions()
@@ -265,7 +261,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                 .title(searchText)
         )?.let { markers.add(it) }
     }
-
 
     private fun drawLine() {
         val last: Int = markers.size - 1
@@ -280,8 +275,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
             )
         }
     }
-
-
 
     override fun onDestroy() {
         scopeIo.cancel()
