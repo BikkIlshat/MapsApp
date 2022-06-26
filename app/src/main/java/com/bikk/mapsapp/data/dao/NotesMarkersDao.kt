@@ -8,7 +8,7 @@ import com.bikk.mapsapp.data.entities.NotesMakerEntity
 @Dao
 interface NotesMarkersDao {
     @Query("SELECT * FROM $NOTES_SAVED_MARKERS_TABLE")
-    fun getNotesMarker(): NotesMakerEntity
+    fun getNotesMarker(): List <NotesMakerEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNotesMarker(notesMakerEntity: NotesMakerEntity)
