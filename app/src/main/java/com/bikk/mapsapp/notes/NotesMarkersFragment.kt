@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bikk.mapsapp.R
+import com.bikk.mapsapp.data.entities.NotesMakerEntity
 import com.bikk.mapsapp.databinding.FragmentNotesMarkerBinding
-import com.bikk.mapsapp.domain.models.NotesMarker
 import com.bikk.mapsapp.notes.adapter.CategoryAdapter
 
 class NotesMarkersFragment : Fragment(R.layout.fragment_notes_marker) {
@@ -22,7 +22,7 @@ class NotesMarkersFragment : Fragment(R.layout.fragment_notes_marker) {
 
     private fun initRecyclerView() = with(viewBinding) {
         adapter = CategoryAdapter(object : OnNotesClickListener {
-            override fun onClick(notesMarker: NotesMarker) {
+            override fun onClick(notesMarker: NotesMakerEntity) {
                 navigateUP()
             }
         })

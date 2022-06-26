@@ -4,19 +4,23 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.bikk.mapsapp.data.dao.NotesMarkerSavedDao
 import com.bikk.mapsapp.data.dao.NotesMarkersDao
 import com.bikk.mapsapp.data.entities.NotesMakerEntity
+import com.bikk.mapsapp.data.entities.NotesMakerSavedEntity
 
 
 @Database(
     entities = [
-        NotesMakerEntity::class
+        NotesMakerEntity::class,
+        NotesMakerSavedEntity::class
     ],
     version = 1,
     exportSchema = false
 )
-abstract class Database : RoomDatabase(){
+abstract class Database : RoomDatabase() {
     abstract fun getNotesMarkers(): NotesMarkersDao
+    abstract fun getNotesMarkersSaved(): NotesMarkerSavedDao
 
 
     companion object {

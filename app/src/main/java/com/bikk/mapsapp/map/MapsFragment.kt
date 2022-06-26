@@ -20,7 +20,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bikk.mapsapp.R
+import com.bikk.mapsapp.data.entities.NotesMakerEntity
 import com.bikk.mapsapp.databinding.FragmentMapsBinding
+import com.bikk.mapsapp.di.modules.RoomModuleInt
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.coroutines.*
+import org.koin.android.ext.android.inject
 import java.io.IOException
 
 
@@ -43,6 +46,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
     private val MIN_DISTANCE_M = 10f
     private lateinit var map: GoogleMap
     private var menu: Menu? = null
+    val repo: RoomModuleInt by inject()
 
     private val markers: ArrayList<Marker> = ArrayList()
 
@@ -263,6 +267,13 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                 .position(location)
                 .title(searchText)
         )?.let { markers.add(it) }
+        val notesMaker = NotesMakerEntity(
+            nameMarker = searchText,
+            latitude = location.latitude,
+            longitude = location.longitude
+        )
+        scopeIo.launch {  repo.insertNotesMarker(notesMaker)}
+
     }
 
     private fun drawLine() {

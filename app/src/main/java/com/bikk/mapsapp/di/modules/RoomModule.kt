@@ -4,7 +4,7 @@ import com.bikk.mapsapp.application.App
 import com.bikk.mapsapp.data.entities.NotesMakerEntity
 
 class RoomModule : RoomModuleInt{
-   override fun insertNotesMarker(notesMaker: NotesMakerEntity) {
-        App.instance.databaseService.getNotesMarkers().insertNotesMarker(notesMaker)
+   override fun insertNotesMarker(notesMakerEntity: NotesMakerEntity) {
+        App.instance.databaseService.getNotesMarkers().insertNotesMarker(notesMakerEntity)
     }
 }

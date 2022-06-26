@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bikk.mapsapp.R
+import com.bikk.mapsapp.data.entities.NotesMakerEntity
 import com.bikk.mapsapp.databinding.LayoutNotesMarkerListItemBinding
-import com.bikk.mapsapp.domain.models.NotesMarker
+
 
 
 class CategoryAdapter(private val onNotesClickListener: OnNotesClickListener) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
-    var notesMarkerData = listOf<NotesMarker>()
+    var notesMarkerData = listOf<NotesMakerEntity>()
         set(value) {
             field = value
             notifyItemChanged(itemCount)
@@ -41,12 +42,11 @@ class CategoryAdapter(private val onNotesClickListener: OnNotesClickListener) :
 
         private val viewBinding: LayoutNotesMarkerListItemBinding by viewBinding()
 
-        fun bind(onNotesClickListener: OnNotesClickListener, item: NotesMarker) =
+        fun bind(onNotesClickListener: OnNotesClickListener, item: NotesMakerEntity) =
             with(viewBinding) {
                 nameMarker.text = item.nameMarker
-                address.text = item.address
-                longitude.text = item.longitude
-                latitude.text = item.latitude
+                longitude.text = item.longitude.toString()
+                latitude.text = item.latitude.toString()
             }
     }
 }

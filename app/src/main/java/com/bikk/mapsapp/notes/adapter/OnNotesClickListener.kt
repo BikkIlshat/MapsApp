@@ -1,7 +1,6 @@
-
-import com.bikk.mapsapp.domain.models.NotesMarker
+import com.bikk.mapsapp.data.entities.NotesMakerEntity
 
 
 interface OnNotesClickListener {
-    fun onClick(category: NotesMarker)
+    fun onClick(category: NotesMakerEntity)
 }

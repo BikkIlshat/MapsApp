@@ -4,24 +4,18 @@ import androidx.room.*
 import com.bikk.mapsapp.data.RoomConstants
 
 
-@Entity(tableName = RoomConstants.NOTES_MARKERS_TABLE)
+@Entity(tableName = RoomConstants.NOTES_SAVED_MARKERS_TABLE)
 data class NotesMakerEntity(
-    @PrimaryKey(autoGenerate = true)
 
-    @ColumnInfo(name = "id marker")
-    var id: Int,
-
+    @PrimaryKey
     @ColumnInfo(name = "name marker")
     val nameMarker: String,
 
-    @ColumnInfo(name = "address")
-    val address: String,
-
     @ColumnInfo(name = "title food")
-    val latitude: String,
+    val latitude: Double,
 
     @ColumnInfo(name = "sourceName food")
-    val longitude: String,
+    val longitude: Double,
 
 )
 
