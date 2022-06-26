@@ -102,13 +102,14 @@
             android:textAlignment="center"
             android:textColor="@color/black" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_save_describe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:background="#2BE68B"
-            android:text="Save Describe" />
+            android:text="Save Describe"
+            tools:ignore="TextContrastCheck" />
 
 
     </LinearLayout>
