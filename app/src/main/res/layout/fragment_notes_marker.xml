@@ -8,23 +8,10 @@
     >
 
     <LinearLayout
+        android:id="@+id/recycler_item_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="26sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/teal_200" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -41,5 +28,10 @@
             >
 
         </androidx.recyclerview.widget.RecyclerView>
+
     </LinearLayout>
+
+
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,22 +1,22 @@
 package com.bikk.mapsapp.data.dao
 
 import androidx.room.*
-import com.bikk.mapsapp.data.RoomConstants.NOTES_MARKERS_TABLE
+import com.bikk.mapsapp.data.RoomConstants.NOTES_SAVED_MARKERS_TABLE
 import com.bikk.mapsapp.data.entities.NotesMakerEntity
 
 
 @Dao
 interface NotesMarkersDao {
-    @Query("SELECT * FROM $NOTES_MARKERS_TABLE")
-    fun getNotesMarker(): NotesMakerEntity
+    @Query("SELECT * FROM $NOTES_SAVED_MARKERS_TABLE")
+    fun getNotesMarker(): List <NotesMakerEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNotesMarker(notesMaker: NotesMakerEntity)
+    fun insertNotesMarker(notesMakerEntity: NotesMakerEntity)
 
     @Delete
-    fun deleteNotesMarker(notesMaker: List<NotesMakerEntity>)
+    fun deleteNotesMarker(notesMakerEntity: List<NotesMakerEntity>)
 
-    @Query("DELETE FROM $NOTES_MARKERS_TABLE")
+    @Query("DELETE FROM $NOTES_SAVED_MARKERS_TABLE")
     fun deleteAllNotesMarker()
 
 }
