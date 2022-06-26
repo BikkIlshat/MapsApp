@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bikk.mapsapp.R
 import com.bikk.mapsapp.databinding.FragmentMapsBinding
@@ -38,16 +39,18 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
 
     private val LATITUDE = 44.952117
     private val LONGITUDE = 34.102417
-    private  val MIN_TIME_MS = 5000L
-    private  val MIN_DISTANCE_M = 10f
+    private val MIN_TIME_MS = 5000L
+    private val MIN_DISTANCE_M = 10f
     private lateinit var map: GoogleMap
     private var menu: Menu? = null
 
     private val markers: ArrayList<Marker> = ArrayList()
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, _ -> }
-    private val scopeIo = CoroutineScope(Dispatchers.IO + coroutineExceptionHandler + SupervisorJob())
-    private val scope = CoroutineScope(Dispatchers.Main + coroutineExceptionHandler + SupervisorJob())
+    private val scopeIo =
+        CoroutineScope(Dispatchers.IO + coroutineExceptionHandler + SupervisorJob())
+    private val scope =
+        CoroutineScope(Dispatchers.Main + coroutineExceptionHandler + SupervisorJob())
     private var job: Job? = null
     private val permissionResult = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -68,6 +71,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         mapFragment?.getMapAsync(callback)
         initSearchByAddress()
         viewBinding.includedMapsFragment.mainFragmentFABLocation.setOnClickListener { checkPermission() }
+        viewBinding.includedMapsFragment.fabSavedNotesGeolocation.setOnClickListener { navigateToNotesMarkersFragment() }
     }
 
     private fun checkPermission() {
@@ -193,7 +197,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
     }
 
 
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.map_menu, menu)
@@ -228,7 +231,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         buttonSearch.setOnClickListener {
             val geoCoder = Geocoder(it.context)
             val searchText = searchAddress.text.toString()
-           job = scopeIo.launch(Dispatchers.IO) {
+            job = scopeIo.launch(Dispatchers.IO) {
                 try {
                     val addresses = geoCoder.getFromLocationName(searchText, 1)
                     if (addresses.isNotEmpty()) {
@@ -286,6 +289,8 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         super.onDestroyView()
     }
 
-
+    private fun navigateToNotesMarkersFragment() {
+        findNavController().navigate(R.id.action_mapsFragment_to_notesMarkersFragment)
+    }
 }
 

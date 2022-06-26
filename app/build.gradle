@@ -97,5 +97,4 @@ dependencies {
     //gson
     def gson_version = '2.9.0'
     implementation "com.google.code.gson:gson:$gson_version"
-
 }
