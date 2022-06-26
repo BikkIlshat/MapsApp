@@ -6,17 +6,16 @@
     app:startDestination="@id/mapsFragment">
 
     <fragment
-        android:id="@+id/mapsFragment"
-        android:name="com.bikk.mapsapp.MapsFragment"
-        android:label="Maps"
-        tools:layout="@layout/fragment_maps">
-        <action
-            android:id="@+id/action_mapsFragment_to_notesFragment"
-            app:destination="@id/notesFragment" />
-    </fragment>
+        android:id="@+id/notesMarkersFragment"
+        android:name="com.bikk.mapsapp.notes.NotesMarkersFragment"
+        android:label="NotesMarkersFragment" />
     <fragment
-        android:id="@+id/notesFragment"
-        android:name="com.bikk.mapsapp.NotesFragment"
-        android:label="Notes"
-        tools:layout="@layout/fragment_notes" />
+        android:id="@+id/mapsFragment"
+        android:name="com.bikk.mapsapp.map.MapsFragment"
+        android:label="MapsFragment" >
+        <action
+            android:id="@+id/action_mapsFragment_to_notesMarkersFragment"
+            app:destination="@id/notesMarkersFragment" />
+    </fragment>
+
 </navigation>
